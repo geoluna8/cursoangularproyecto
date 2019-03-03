@@ -1,0 +1,16 @@
+.ng-valid[required], .ng-valid.required{
+    border-left: 5px solid green;
+    transition: .5s border-left;
+} /*Indica los campos que son validos*/
+
+.ng-invalid:not(form){
+    border-left: 5px solid red;
+} /*Indica los campos que son invalidos*/
+
+.ng-pristine:not(form), .ng-untounched:not(form){
+    border-right: 5px solid darkorange;
+} /*Indica los campos que no han sido modificados*/
+
+.ng-dirty[required]{
+	border-right: 5px solid blue;
+} /*Indica los campos que han sido modificados*/

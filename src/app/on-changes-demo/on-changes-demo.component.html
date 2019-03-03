@@ -1,0 +1,17 @@
+<h1>Ng On change</h1>
+<form action="">
+
+  <div class="form-group">
+    <label for="{{nombre}}">Nombre</label>
+    <input type="text" #nombreNuevo class="form-control" (keyup)="asignarValores(nombreNuevo, comentarioNuevo)">
+  </div>
+
+  <div class="form-group">
+    <label for="{{comentario}}">Comentario</label>
+    <input type="text" #comentarioNuevo class="form-control" (keyup)="asignarValores(nombreNuevo, comentarioNuevo)">
+  </div>
+
+</form>
+
+<app-test-changes2 [nombre]="nombre" [comentario]="comentario"></app-test-changes2 >
+<app-boton-event (click-suscripcion)="suscribirme($event)"></app-boton-event>

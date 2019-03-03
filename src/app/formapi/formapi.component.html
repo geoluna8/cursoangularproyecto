@@ -1,0 +1,174 @@
+<div class="container mx-0">
+	<div class="row">
+		<h2>Directorio de Personas</h2>
+	</div>
+	<div class="row">
+		<button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-plus"></i> Agregar registro</button>
+		<table class="table table-striped table-hover table-bordered">
+		  <thead>
+		    <tr>
+		      <th scope="col"><i class="fa fa-user"></i> Nombre</th>
+		      <th scope="col"><i class="fa fa-user"></i> Apellidos</th>
+		      <th scope="col"><i class="fa fa-envelope"></i> Email</th>
+		      <th scope="col"><i class="fa fa-phone"></i> Telefono</th>
+		      <th scope="col"><i class="fa fa-map-marker"></i> Ciudad</th>
+		      <th scope="col"><i class="fa fa-flag"></i> Pais</th>
+		      <th colspan="3" scope="col"><i class="fa fa-cog"></i> Ajustes</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr *ngFor="let persona of personas">
+		      <td>{{ persona.nombre }}</td>
+		      <td>{{ persona.apellidos }}</td>
+		      <td>{{ persona.email }}</td>
+		      <td>{{ persona.telefono }}</td>
+		      <td>{{ persona.ciudad }}</td>
+		      <td>{{ persona.pais }}</td>
+		      <td><button class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter2" (click)="edicion(persona)"><i class="fa fa-edit"></i></button></td>
+		      <!--td><button class="btn btn-primary" (click)="inspeccionarPersona(persona)"><i class="fa fa-eye"></i></button></td-->
+		      <td><a class="btn btn-primary" href="/formapi/detalles/{{persona._id}}"><i class="fa fa-eye"></i></a></td>
+		      <td><button class="btn btn-danger" (click)="borrarPersona(persona)"><i class="fa fa-trash"></i></button></td>
+		    </tr>
+		  </tbody>
+		</table>
+	</div>
+</div>
+
+
+<!-- Modal Agregar Persona -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Agregar persona</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #PersonaForm="ngForm">
+        <div class="row">	
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
+              </div>
+              <input type="text" class="form-control" placeholder="Nombre" aria-label="Nombre" aria-describedby="basic-addon1" [(ngModel)]="nuevaPersona.nombre" name="nombre" required>
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
+              </div>
+              <input type="text" class="form-control" placeholder="Apellidos" aria-label="Apellidos" aria-describedby="basic-addon1" [(ngModel)]="nuevaPersona.apellidos" name="apellidos" required>
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-envelope"></i></span>
+              </div>
+              <input type="text" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" [(ngModel)]="nuevaPersona.email" name="email" required>
+            </div>                         
+          </div>
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-phone"></i></span>
+              </div>
+              <input type="text" class="form-control" placeholder="Telefono" aria-label="Telefono" aria-describedby="basic-addon1" [(ngModel)]="nuevaPersona.telefono" name="telefono" required>
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
+              </div>
+              <input type="text" class="form-control" placeholder="Ciudad" aria-label="Ciudad" aria-describedby="basic-addon1" [(ngModel)]="nuevaPersona.ciudad" name="ciudad" required>
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-flag"></i></span>
+              </div>
+              <select class="custom-select" [(ngModel)]="nuevaPersona.pais" name="pais" required>
+			  <option value="">Selecciona un pais</option>
+			  <option *ngFor="let pais of paises;" [value]="pais.name">{{pais.name}}</option>
+			</select>
+            </div>                         
+          </div>          
+        </div>
+        </form>        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal" [disabled]="!PersonaForm.valid" (click)="guardarPersona(nuevaPersona)">Guardar</button>
+        {{ nuevaPersona | json }} El formulario es: {{ PersonaForm.valid }}
+      </div>
+    </div>
+  </div>
+</div>
+<!--fin modal-->
+
+<!-- Modal Editar Persona -->
+<div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Editar persona</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #editarPersonaForm="ngForm">
+        <div class="row">	
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
+              </div>
+              <input type="text" class="form-control" placeholder="Nombre" aria-label="Nombre" aria-describedby="basic-addon1" [(ngModel)]="editarPersona.nombre" name="nombre" required>
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
+              </div>
+              <input type="text" class="form-control" placeholder="Apellidos" aria-label="Apellidos" aria-describedby="basic-addon1" [(ngModel)]="editarPersona.apellidos" name="apellidos" required>
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-envelope"></i></span>
+              </div>
+              <input type="text" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" [(ngModel)]="editarPersona.email" name="email" required>
+            </div>                         
+          </div>
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-phone"></i></span>
+              </div>
+              <input type="text" class="form-control" placeholder="Telefono" aria-label="Telefono" aria-describedby="basic-addon1" [(ngModel)]="editarPersona.telefono" name="telefono" required>
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
+              </div>
+              <input type="text" class="form-control" placeholder="Ciudad" aria-label="Ciudad" aria-describedby="basic-addon1" [(ngModel)]="editarPersona.ciudad" name="ciudad" required>
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><i class="fa fa-flag"></i></span>
+              </div>
+              <select class="custom-select" [(ngModel)]="editarPersona.pais" name="pais" required>
+			  <option value="">Selecciona un pais</option>
+			  <option *ngFor="let pais of paises;" [value]="pais.name">{{pais.name}}</option>
+			</select>
+            </div>                         
+          </div>          
+        </div>
+        </form>        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal" [disabled]="!editarPersonaForm.valid" (click)="updatePersona(editarPersona)">Guardar</button>
+        {{ editarPersona | json }} El formulario es: {{ editarPersonaForm.valid }}
+      </div>
+    </div>
+  </div>
+</div>
+<!--fin modal-->
